@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * The Class RickandmortyApplication.
  */
+
 @SpringBootApplication
 public class RickandmortyApplication {
 
