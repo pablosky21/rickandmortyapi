@@ -48,7 +48,7 @@ public class LocationServiceImpl implements LocationService {
 			locationReponse = restTemplate.getForObject(API_URL_LOCATION, LocationDomain.class, params);
 
 		} catch (Exception e) {
-			logger.error("CharacterService Error-----", e);
+			logger.error("LocationService Error-----", e);
 		}
 		return locationReponse;
 	}
