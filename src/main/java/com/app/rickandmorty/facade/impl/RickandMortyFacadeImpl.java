@@ -1,5 +1,7 @@
 package com.app.rickandmorty.facade.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +12,6 @@ import com.app.rickandmorty.facade.RickandMortyFacade;
 import com.app.rickandmorty.mapper.RickandMortyMapper;
 import com.app.rickandmorty.service.CharacterService;
 import com.app.rickandmorty.service.LocationService;
-
 
 /**
  * The Class RickandMortyFacadeImpl.
@@ -30,6 +31,9 @@ public class RickandMortyFacadeImpl implements RickandMortyFacade {
 	@Autowired
 	RickandMortyMapper rickandMortyMapper;
 
+	/** The Constant logger. */
+	private static final Logger logger = LoggerFactory.getLogger("RickandMortyFacade");
+
 	/**
 	 * Gets the character by id.
 	 *
@@ -42,13 +46,16 @@ public class RickandMortyFacadeImpl implements RickandMortyFacade {
 		RickandMortyResponse response = new RickandMortyResponse();
 		CharacterDomain characterResponse = new CharacterDomain();
 		LocationDomain locationResponse = new LocationDomain();
-		locationResponse = locationService.getCharacterLocationById(characterId);
-		characterResponse = characterService.getCharacterById(characterId);
-		response = rickandMortyMapper.characterDomainToDto(characterResponse, locationResponse,
-				(characterResponse.getEpisode() != null && characterResponse.getEpisode().size() > 0)
-						? characterResponse.getEpisode().size()
-						: 0);
-
+		try {
+			locationResponse = locationService.getCharacterLocationById(characterId);
+			characterResponse = characterService.getCharacterById(characterId);
+			response = rickandMortyMapper.characterDomainToDto(characterResponse, locationResponse,
+					(characterResponse.getEpisode() != null && characterResponse.getEpisode().size() > 0)
+							? characterResponse.getEpisode().size()
+							: 0);
+		} catch (Exception e) {
+			logger.error("RickandMortyFacade Error-----", e);
+		}
 		return response;
 	}
 
